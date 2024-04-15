@@ -1,6 +1,7 @@
 package com.yll.online_project.controller.student;
 
 import com.yll.online_project.entity.*;
+import com.yll.online_project.utils.JwtUtil;
 import com.yll.online_project.service.AccountService;
 import com.yll.online_project.service.ExamService;
 import io.swagger.annotations.Api;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Api(tags = "学生考试管理")
 @Controller
 @RestController
@@ -21,6 +24,9 @@ public class ExamController {
 
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @PostMapping("/showExamInfo")
     @ApiOperation("显示考试信息")
@@ -35,53 +41,62 @@ public class ExamController {
         return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", examinfo);
     }
 
-//    @PostMapping("/showStuInfo")
-//    @ApiOperation("显示考生信息")
+    @PostMapping("/showStuInfo")
+    @ApiOperation("显示考生信息")
 //    @ApiImplicitParams({@ApiImplicitParam(name = "token", value = "考生学号",required = true)})
-//    public ResponseResult<Account> showStuInfo(@RequestParam("studentId") String studentId){
-//        return ResponseResult.success(new Account());
-//    }
-//
-//    @PostMapping("/queryGrades")
-//    @ApiOperation("考生查询考试成绩")
+    public ResponseEntity<ResponseResult<Account>> showStuInfo(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        long AccountId =jwtUtil.getAccountIdFromToken(authorizationHeader);
+        Account account = new Account();
+        account.setAccountId(AccountId);
+        return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", account);
+    }
+
+    @PostMapping("/queryGrades")
+    @ApiOperation("考生查询考试成绩")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "studentId", value = "考生学号",required = true)
 //    })
-//    public ResponseResult<Double> queryGrades(
-//            @RequestParam("studentId") String studentId){
-//        Double result=0.0;
-//        return ResponseResult.success(result);
-//    }
-//
-//    @GetMapping("/queryExam")
-//    @ApiOperation("查询接收到的考试")
+    public ResponseEntity<ResponseResult<Account>> queryGrades(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        long AccountId =jwtUtil.getAccountIdFromToken(authorizationHeader);
+        Account account = new Account();
+        account.setAccountId(AccountId);
+        return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", account);
+    }
+
+    @GetMapping("/queryExam")
+    @ApiOperation("查询接收到的考试")
 //    @ApiImplicitParams({@ApiImplicitParam(name = "studentId", value = "学生学号",required = true)})
-//    public ResponseResult<List<Test>> queryTestForStu(@RequestParam("studentId") String studentId){
-//        List<Test> list=new ArrayList<>();
-//        return ResponseResult.success(list);
-//    }
-//
-//    @PostMapping("/addExamAnswer")
-//    @ApiOperation("考生添加答案")
-//    @ApiImplicitParams({@ApiImplicitParam(name = "studentId", value = "学生学号",required = true),
-//                        @ApiImplicitParam(name = "serialNumber",value = "题目序号"),
-//                        @ApiImplicitParam(name = "stuAnswer",value = "考生答案")})
-//    public ResponseResult<Answer> addStuExamAnswer(@RequestParam("studentId")String studentId,
-//                                @RequestParam("serialNumber")Integer serialNumber,
-//                                @RequestParam("stuAnswer")String stuAnswer){
-//        return ResponseResult.success(null);
-//    }
-//
-//    @PutMapping("/updateExamAnswer")
-//    @ApiOperation("考生修改答案")
+    public ResponseEntity<ResponseResult<Account>> queryTestForStu(HttpServletRequest request){
+        String authorizationHeader = request.getHeader("Authorization");
+        long AccountId =jwtUtil.getAccountIdFromToken(authorizationHeader);
+        Account account = new Account();
+        account.setAccountId(AccountId);
+        return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", null);
+    }
+
+    @PostMapping("/addExamAnswer")
+    @ApiOperation("考生添加答案")
+    @ApiImplicitParams({@ApiImplicitParam(name = "studentId", value = "学生学号",required = true),
+                        @ApiImplicitParam(name = "serialNumber",value = "题目序号"),
+                        @ApiImplicitParam(name = "stuAnswer",value = "考生答案")})
+    public ResponseEntity<ResponseResult<Account>> addStuExamAnswer(@RequestParam("studentId")String studentId,
+                                @RequestParam("serialNumber")Integer serialNumber,
+                                @RequestParam("stuAnswer")String stuAnswer){
+        return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", null);
+    }
+
+    @PutMapping("/updateExamAnswer")
+    @ApiOperation("考生修改答案")
 //    @ApiImplicitParams({@ApiImplicitParam(name = "studentId", value = "学生学号",required = true),
 //                        @ApiImplicitParam(name = "serialNumber",value = "题目序号"),
 //                        @ApiImplicitParam(name = "newAnswer",value = "考生修改的答案")})
-//    public ResponseResult<Answer> updateExamAnswer(@RequestParam("studentId")String studentId,
-//                                @RequestParam("serialNumber")Integer serialNumber,
-//                                @RequestParam("stuAnswer")String newAnswer){
-//        return ResponseResult.success(null);
-//    }
+    public ResponseEntity<ResponseResult<Account>> updateExamAnswer(@RequestParam("studentId")String studentId,
+                                @RequestParam("serialNumber")Integer serialNumber,
+                                @RequestParam("stuAnswer")String newAnswer){
+        return ResponseResult.toResponseEntity(HttpStatus.CREATED, "考试基本信息", null);
+    }
 //
 //    @PostMapping("/createExamRecord")
 //    @ApiOperation("生成考生考试记录")
